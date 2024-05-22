@@ -1,7 +1,9 @@
+#include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 
-unsigned int fibonacci(unsigned int nth) {
+#define LINE_MAX 30
+
+unsigned long long int fibonacci(unsigned short int nth) {
     if (nth <= 1) {
         return nth;
     }
@@ -10,22 +12,24 @@ unsigned int fibonacci(unsigned int nth) {
 
 unsigned short int get_input() {
     unsigned short int generate_nth;
+    char buffer[LINE_MAX];
 
-    printf("Enter a number to generate Fibonacci up to: ");
-    unsigned short int error = scanf("%hu", &generate_nth);
-    if (error == 1) {
-        printf("Successful\n");
-        // free(error);
-    } else if (error != 0) {
-        perror("scanf");
-    } else {
-        fprintf(stderr, "No matching characters\n");
+    while (true) {
+        printf("Enter a number to generate Fibonacci up to: ");
+        fgets(buffer, sizeof(buffer), stdin);
+
+        if (*buffer != '\n') {
+            if (sscanf(buffer, "%hu", &generate_nth) == 1) {
+                break;
+            }
+            fprintf(stderr, "Error: Please enter a valid integer.\n");
+        }
     }
 
     return generate_nth;
 }
 
 int main() {
-    printf("%d\n", fibonacci(get_input()));
+    printf("%llu\n", fibonacci(get_input()));
     return 0;
 }
